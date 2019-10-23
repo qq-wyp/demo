@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+const login=()=>import('../pages/login.vue')
 const index = () => import('../pages/index.vue')
 
-const banner=()=>import('../pages/banner.vue')
+const manage=()=>import('../pages/manage.vue')
+const banner = () => import('../pages/banner.vue')
 const teacher = () => import('../pages/teacher.vue')
 const water = () => import('../pages/water.vue')
 const repair = () => import('../pages/repair.vue')
@@ -16,13 +18,18 @@ export default new Router({
   routes: [
     {
       path: '/index',
-      name: 'index',
+      name: '欢迎',
       component: index,
       children: [
         {
+          path: 'manage',
+          name: '管理员管理',
+          component:manage
+        },
+        {
           path: 'banner',
           name: 'banner管理',
-          component:banner
+          component: banner
         },
         {
           path: 'teacher',
@@ -50,7 +57,16 @@ export default new Router({
           component: changePass
         },
       ]
-      
+    },
+    {
+      path: '/login',
+      name: 'login',
+      alias:'/',
+      component:login
+    },
+    {
+      path: '*',
+      redirect:'/index'
    }
   ]
 })

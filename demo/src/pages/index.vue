@@ -18,6 +18,8 @@ export default {
 
 <style scoped lang="stylus">
 #index{
+  width 100vw
+  height 100vh
   display: flex;
   flex-direction: column;
 }
