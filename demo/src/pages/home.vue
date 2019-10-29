@@ -2,7 +2,7 @@
   <div class="home">
     <el-tabs v-model="activeName" @tab-click="handleClick" class="el-tabs">
       <el-tab-pane label="家教banner" name="first">
-        <v-add @click.native="add"></v-add>
+        <v-add @click.native="add"></v-add><!-- 添加 -->
         <!-- 添加 -->
         <el-table :data="home" height="250" border style="width: 80%;margin:20px auto;">
           <el-table-column label="序号" width="180">
@@ -22,7 +22,7 @@
       </el-tab-pane>
       <!-- 分割线 -->
       <el-tab-pane label="人员管理" name="second">
-        <v-add @click.native="add2"></v-add>
+        <v-add @click.native="add2"></v-add><!-- 添加 -->
         <!-- <el-select v-model="value" placeholder="请选择" class="title">
       
           <el-option label="全部" :value="value"></el-option>
@@ -67,7 +67,7 @@
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button @click="look(scope.row.id)">查看</el-button>
-              <el-button type="danger" @click="del2(scope.row.id)">删除</el-button>
+              <v-yesalert :idss='scope.row.id'  @chushihua='parentMethod2'></v-yesalert><!-- 删除 -->
             </template>
           </el-table-column>
         </el-table>
@@ -75,27 +75,11 @@
     </el-tabs>
     <!-- -------- -->
     <v-homeadd v-show="$store.state.homeState" @work="parentMethod"></v-homeadd>
-    <v-renyadd v-show="$store.state.renState"></v-renyadd>
+    <v-renyadd v-show="$store.state.renState" :p='istrue'  @chushihua2='parentMethod2'></v-renyadd>
   </div>
 </template>
 <script>
-/* age: "1"
-city: "1"
-edu: "小学"
-experience: "1"
-id: "1571819259291277333"
-img: "1"
-info: "1"
-len: "1"
-likeNum: "1"
-name: "aaaaaaaaaaaaaaaaaaaaaaaaa"
-price: "1"
-qualification: "身份证,学位证,健康证"
-readNum: "1"
-tel: "1"
-type: "保姆,钟点工,保洁,新居开荒,月嫂"
-vNum: "1"
-year: "1" */
+
 import vHomeadd from "../views/home-add";
 import vRenyadd from "../views/reny-add";
 import API from "../common/js/API";
@@ -106,7 +90,8 @@ export default {
       home: [],
       ren: [],
       value: "",
-      types: []
+      types: [],
+      istrue:true,
     };
   },
   methods: {
@@ -130,10 +115,13 @@ export default {
       });
     },
     add() {
+     
       this.$store.dispatch("homeState1");
     },
     add2() {
+      this.istrue=true;
       this.$store.dispatch("renState1");
+      
     },
     del(id) {
       this.$axios({
@@ -150,8 +138,25 @@ export default {
         });
       });
     },
+    look(id){
+      this.istrue=false;
+      this.$store.dispatch("renState1");
+      this.$axios({
+        method:'get',
+        url: API.findHomeWorker,
+        params: {
+          id:id
+        }
+      }).then(res=>{
+        this.Event.$emit('renshuju', res.data.data)
+        console.log(res.data.data)
+      })
+    },
     parentMethod() {
       this.init0({});
+    },
+    parentMethod2(){
+      this.init2({});
     }
   },
   mounted() {

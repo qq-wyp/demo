@@ -35,17 +35,16 @@ router.beforeEach((to, from, next) => {
     }
     return;
   }
-  // if (to.path.slice(0, 6)=='/index') {
-  //   if (sessionStorage.getItem("type") == '1') {
-  //     next()
-  //   } else {
-  //     next("/login")
-  //   }
-  //   return;
-  // }
+  if (to.path.slice(0, 6)=='/index') {
+    if (sessionStorage.getItem("type") == '1') {
+      next()
+    } else {
+      next("/login")
+    }
+    return;
+  }
   next()
 })
-
 
 
 import formatDate from './filters/formatDate' //全局过滤器

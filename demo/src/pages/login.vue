@@ -70,8 +70,6 @@ export default {
               if (res.data.type == "0") {
                 this.$router.push("/index/manage");
                 this.$store.dispatch("xianshistate0");
-              } else if (res.data.type == "1") {
-                this.$router.push("/index");
               }
             } else {
               alert(res.data.info);
@@ -94,6 +92,7 @@ export default {
           }
         }).then(res => {
           if (res.data.isok) {
+            window.sessionStorage.setItem("type", res.data.type);
             if (res.data.type == "1") {
               this.$router.push("/index");
               this.$store.dispatch("xianshistate1");

@@ -19,54 +19,64 @@ export default new Router({
     {
       path: '/index',
       name: '欢迎',
+      // meta: { requiresAuth: true, }, // 需要登录
       component: index,
+      
       children: [
         {
           path: 'manage',
           name: '管理员管理',
-          component:manage
+          component: manage,
+          // meta: { requiresAuth: true, } // 需要登录
         },
         {
           path: 'banner',
           name: 'banner管理',
-          component: banner
+          component: banner,
+          // meta: { requiresAuth: true,  } // 需要登录
         },
         {
           path: 'teacher',
           name: '家教管理',
-          component: teacher
+          component: teacher,
+          // meta: { requiresAuth: true, } // 需要登录
         },
         {
           path: 'water',
           name: '水站管理',
-          component: water
+          component: water,
+          // meta: { requiresAuth: true, } // 需要登录
         },
         {
           path: 'repair',
           name: '维修管理',
-          component: repair
+          component: repair,
+          // meta: { requiresAuth: true, } // 需要登录
         },
         {
           path: 'home',
           name: '家政管理',
-          component: home
+          component: home,
+          // meta: { requiresAuth: true, } // 需要登录
         },
         {
           path: 'changePass',
           name: '修改密码',
-          component: changePass
+          component: changePass,
+          // meta: { requiresAuth: true, } // 需要登录
         },
       ]
     },
     {
       path: '/login',
       name: 'login',
-      alias:'/',
+      alias:'/',//别名
       component:login
     },
     {
       path: '*',
-      redirect:'/index'
+      redirect: '/index',
+      // meta: { requiresAuth: true, } // 需要登录
    }
   ]
 })

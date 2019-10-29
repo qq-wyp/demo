@@ -15,14 +15,16 @@
          <div class="check"><span class="sp1">图片</span><input type="text" placeholder="url地址" v-model="user.img"></div>
          <el-row class="btn">
             <el-button class="qx" @click="cancel">取消</el-button>
-            <el-button class="tj" @click="add">添加</el-button>
+            <el-button class="tj" @click="add" v-show="p">添加</el-button>
+            <el-button class="tj" @click="xiugai" v-show="!p">修改</el-button>
         </el-row>
      </div>
  </div>
 </template>
 <script>
+import API from '../common/js/API'
 export default {
-    props:['m'],
+    props:['m','p','pp'],
     data(){
         return {
             user:{
@@ -50,6 +52,19 @@ export default {
             this.$store.dispatch('waterstate0')
             this.$emit('tianjia',this.user)
         },
+        xiugai(){
+            console.log(this.pp)
+            this.$axios({
+                method:'get',
+                url: API.updateWater,
+                params: {id:this.pp}
+            }).then(res=>{
+                if(res.data.isok){
+                    this.user=res.data.data
+                }
+                console.log(res)
+            })
+        }
     },
     watch: {
         user:{

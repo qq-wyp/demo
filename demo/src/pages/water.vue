@@ -55,7 +55,7 @@
       </el-tab-pane>
     </el-tabs>
     <!-- 分割线 -->
-    <v-wateradd :m="message" v-show="$store.state.waterstate" @tianjia="parentMethod"></v-wateradd>
+    <v-wateradd :m="message" :p='istrue' :pp='idss' v-show="$store.state.waterstate" @tianjia="parentMethod"></v-wateradd>
   </div>
 </template>
 <script>
@@ -64,13 +64,16 @@ import API from "../common/js/API";
 export default {
   data() {
     return {
+      idss:'',
+      istrue:true,
       message: {},
       activeName: "first",
       d: [],
       com: [],
       //   ---------
       options: [],
-      value: ""
+      value: "",
+      
     };
   },
   methods: {
@@ -95,6 +98,7 @@ export default {
       });
     },
     add() {
+      this.istrue=true;
       this.$store.dispatch("waterstate1");
     },
     del(id) {
@@ -153,6 +157,7 @@ export default {
         .catch(() => {});
     },
     look(id) {
+      this.istrue=false;
       this.$store.dispatch("waterstate1");
       this.$axios({
         method: "get",
@@ -163,6 +168,7 @@ export default {
       }).then(res => {
         this.message = res.data.data[0];
         console.log(this.message);
+        this.idss=id;
       });
     },
     parentMethod(e) {

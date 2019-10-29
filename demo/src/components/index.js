@@ -4,6 +4,7 @@ import vTeachertianjia1 from './teacher-tianjia1.vue'
 import vTeachertianjia2 from './teacher-tianjia2.vue'
 import vTeacherdel1 from './teacher-del1.vue'
 import vBannertianjia from './banner-tianjia .vue'
+import vYesalert from './yesalert.vue'
 
 
 export default {
@@ -13,4 +14,5 @@ export default {
     vTeachertianjia2,
     vTeacherdel1,
     vBannertianjia,
+    vYesalert,
 }

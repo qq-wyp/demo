@@ -1,6 +1,6 @@
 <template>
   <div class="ren" @click.self="cancel">
-    <div class="box"  style="height:500px;overflow-y:auto;">
+    <div class="box" style="height:500px;overflow-y:auto;">
       <div class="title">
         <span class="sp1">添加维修</span>
         <span class="sp2" @click.self="cancel">X</span>
@@ -147,7 +147,7 @@
           <el-col :span="24">
             <el-autocomplete
               class="inline-input"
-              v-model="state1"
+              v-model="user.edu"
               :fetch-suggestions="querySearch"
               placeholder="请选择学历"
               @select="handleSelect"
@@ -155,11 +155,11 @@
           </el-col>
         </el-row>
       </div>
-     <div class="check">
+      <div class="check">
         <span class="sp1">工作年限</span>
         <input type="number" placeholder="工作年限" v-model="user.year" />
       </div>
-       <div class="check">
+      <div class="check">
         <span class="sp1">级别</span>
         <input type="text" placeholder="eg:v3" v-model="user.vNum" />
       </div>
@@ -179,22 +179,27 @@
         <span class="sp1">点赞数量</span>
         <input type="number" placeholder="点赞数量" v-model="user.likeNum" />
       </div>
-       <div class="check">
+      <div class="check">
         <span class="sp1">关注人数</span>
         <input type="number" placeholder="关注人数" v-model="user.readNum " />
       </div>
        <div class="check">
+        <span class="sp1">距离</span>
+        <input placeholder="eg:4.2km" v-model="user.len " />
+      </div>
+      <div class="check">
         <span class="sp1">自我评价</span>
-        <input  placeholder="eg:吃苦能干" v-model="user.info " />
+        <input placeholder="eg:吃苦能干" v-model="user.info " />
       </div>
       <div class="check">
         <span class="sp1">免冠照片</span>
-        <input  placeholder="照片路径" v-model="user.img " />
+        <input placeholder="照片路径" v-model="user.img " />
       </div>
       <!-- --- -->
-       <el-row class="btn">
+      <el-row class="btn">
         <el-button class="qx" @click="cancel">取消</el-button>
-        <el-button class="tj" @click="add">添加</el-button>
+        <el-button class="tj" @click="add" v-show="p">添加</el-button>
+        <el-button class="tj" @click="xiugai" v-show="!p">修改</el-button>
       </el-row>
     </div>
   </div>
@@ -202,14 +207,15 @@
 <script>
 import API from "../common/js/API";
 export default {
+  props:['p'],
   data() {
     return {
+      istrue:true,
       user: {
-          likeNum:'',
-          experience:'',
-          readNum :'',
-          len:'' ,
-          info :'',
+        likeNum: "",
+        experience: "",
+        readNum: "",
+        info: "",
         tel: "",
         img: "",
         name: "",
@@ -218,20 +224,51 @@ export default {
         year: "",
         vNum: "",
         price: "",
-        city: ""
+        city: "",
+        len: "",
+        qualification:'身份证',
+        type:'保姆',
+        /* 
+        experience 几年经验
+    readNum 关注人数
+    likeNum 好评人数
+    len 距离
+    tel 电话
+    info 自我评价
+    qualification 资格认证 eg:["身份证"，“学位证”]
+    type 服务项目 [“保姆”,"月嫂"]
+ */
       },
       msg: [],
-
       //   -------
       restaurants: [],
-      state1: "",
       state2: ""
     };
   },
   mounted() {
     this.restaurants = this.loadAll();
+    this.Event.$on("renshuju",(e)=>{
+      console.log('================')
+      this.user=e[0]
+    })
   },
   methods: {
+    xiugai(){
+      this.$axios({
+        method:'get',
+        url: API.updateHomeWorker,
+        params: this.user
+      }).then(res=>{
+        console.log(res)
+        if(res.data.isok){
+          this.$message({
+            type: 'success',
+            message:res.data.info
+          });
+          this.$store.dispatch('renState0')
+        }
+      })
+    },
     check(e) {
       let target = e.target;
       let tarinp = target.parentNode.parentNode.children[1];
@@ -259,12 +296,12 @@ export default {
     },
     loadAll() {
       return [
-        { value: "小学", },
-        { value: "初中",    },
-        { value: "高中",},
-        { value: "本科", },
-        { value: "研究生", },
-        { value: "博士", },
+        { value: "小学" },
+        { value: "初中" },
+        { value: "高中" },
+        { value: "本科" },
+        { value: "研究生" },
+        { value: "博士" }
       ];
     },
     handleSelect(item) {
@@ -275,7 +312,21 @@ export default {
     },
     add() {
       this.$store.dispatch("renState0");
-    }
+      this.$axios({
+        method: "get",
+        url: API.addHomeWorker,
+        params: this.user
+      }).then(res => {
+        if(res.data.isok){
+          this.$emit('chushihua2');
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+          
+        }
+      });
+    },
   }
 };
 </script>
@@ -403,19 +454,19 @@ export default {
   }
 }
 
-
-
 .bg {
   background-color: yellowgreen;
 }
+
 // -----
-.xueli>>>.el-input__inner{
-    width 550px
-    height 35px
-    border-radius 5px
+.xueli>>>.el-input__inner {
+  width: 550px;
+  height: 35px;
+  border-radius: 5px;
 }
-.btn{
-  margin-left 500px
-  margin-bottom 30px
+
+.btn {
+  margin-left: 500px;
+  margin-bottom: 30px;
 }
 </style>

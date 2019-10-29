@@ -1,5 +1,5 @@
-var baseUrl="/api"
-
+// var baseUrl="/api"
+var baseUrl=''
 var addTeacherBanner = baseUrl + '/addTeacherBanner'
 var login = baseUrl + '/login'
 var findManage = baseUrl + '/findManage'
@@ -35,7 +35,11 @@ var homeBanner = baseUrl +'/homeBanner'
 var delHomeBanner = baseUrl + '/delHomeBanner'
 var addHomeBanner = baseUrl + '/addHomeBanner'
 var findHomeWorker = baseUrl + '/findHomeWorker'
-var getHomeType = baseUrl +'/getHomeType'
+var getHomeType = baseUrl + '/getHomeType'
+var delHomeWorker = baseUrl + '/delHomeWorker'
+var addHomeWorker = baseUrl + '/addHomeWorker'
+var updateHomeWorker = baseUrl + '/updateHomeWorker'
+
 
 export default {
     addTeacherBanner,
@@ -74,4 +78,7 @@ export default {
     addHomeBanner,
     findHomeWorker,
     getHomeType,
+    delHomeWorker,
+    addHomeWorker,
+    updateHomeWorker,
 }
